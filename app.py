@@ -40,6 +40,25 @@ def categorize(ticket):
 
     return "Other"
 
+# Retorna usuarios que mais enviaram tickets
+@app.route("/main_users")
+def get_users():
+    # Abre arquivo de tickets
+    with open('mock_tickets.json', 'r') as file:
+        tickets = json.load(file)["tickets"]
+
+    users = {}
+    for ticket in tickets:
+        requester = ticket.get("requester", {})
+        user = requester.get("name")
+        if not user:
+            continue
+
+        users[user] = users.get(user, 0) + 1
+
+    return users
+
+# Retorna tickets categorizados de acordo com dict
 @app.route("/categories")
 def get_categories():
     # Abre arquivo de tickets
@@ -53,6 +72,7 @@ def get_categories():
     
     return categories
 
+# Retorna todos os tickets
 @app.route("/tickets")
 def get_tickets():
     # Abre arquivo de tickets
@@ -61,6 +81,7 @@ def get_tickets():
     
     return tickets
 
+# Mostra interface simples para o usuario
 @app.route("/")
 def home():
     return render_template("index.html")
