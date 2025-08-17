@@ -1,4 +1,4 @@
-from flask import Flask, render_template
+from flask import Flask, jsonify, render_template
 import json
 app = Flask(__name__)
 
@@ -47,16 +47,18 @@ def get_users():
     with open('mock_tickets.json', 'r') as file:
         tickets = json.load(file)["tickets"]
 
-    users = {}
+    counts = {}
     for ticket in tickets:
-        requester = ticket.get("requester", {})
-        user = requester.get("name")
-        if not user:
+        requester = ticket.get("requester") or {}
+        name = requester.get("name")
+        if not name:
             continue
+        counts[name] = counts.get(name, 0) + 1
 
-        users[user] = users.get(user, 0) + 1
+    ordered = sorted(counts.items(), key=lambda kv: (-kv[1], kv[0]))
 
-    return users
+    result = [{"user": name, "tickets": total} for name, total in ordered]
+    return jsonify(result), 200
 
 # Retorna tickets categorizados de acordo com dict
 @app.route("/categories")
