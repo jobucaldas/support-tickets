@@ -17,7 +17,7 @@
             const container = document.createElement('div');
             const header = document.createElement('div');
             let isOpen = false;
-            header.textContent = `[+] ${name} (${tickets.length})`;
+            header.textContent = `${name} (${tickets.length}) [+]`;
 
             const list = document.createElement('div');
             list.style.display = "none";
@@ -30,9 +30,11 @@
             });
 
             header.addEventListener("click", () => {
+                event.stopPropagation();
+                
                 isOpen = !isOpen;
                 list.style.display = isOpen ? "block" : "none";
-                header.textContent = `${isOpen ? "[-]" : "[+]"} ${name} (${tickets.length})`;
+                header.textContent = `${name} (${tickets.length}) ${isOpen ? "[-]" : "[+]"}`;
             });
 
             container.appendChild(header);
