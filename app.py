@@ -4,11 +4,14 @@ app = Flask(__name__)
 
 # Definição de categorias
 CATEGORY_DICT = {
-    "Item Return": ["return", "exchange"],
-    "Account": ["account", "login", "locked"],
-    "Payment": ["payment", "store credit", "failed payment", "gift card", "charge"],
-    "Promotion": ["price", "promo", "discount", "coupon", "offer"],
-    "Package": ["tracking", "package", "delay", "shipment", "delivery"],
+    "Item Return": ["return", "exchange", "refund", "warranty", "replace"],
+    "Account": ["account", "login", "locked", "signup", "register", "password", "reset"],
+    "Payment": ["payment", "store credit", "failed payment", "gift card", "charge", "billing", "invoice", "transaction"],
+    "Promotion": ["price", "promo", "discount", "coupon", "offer", "sale", "deal"],
+    "Package": ["tracking", "package", "delay", "shipment", "delivery", "lost", "damaged", "courier"],
+    "Technical Issue": ["bug", "error", "issue", "crash", "slow", "not working", "failure"],
+    "Product Inquiry": ["availability", "stock", "size", "color", "spec", "specification", "feature"],
+    "Feedback/Complaint": ["complaint", "feedback", "unsatisfied", "poor", "bad service", "suggestion", "review"]
 }
 
 def categorize(ticket):
