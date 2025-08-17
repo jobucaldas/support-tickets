@@ -5,6 +5,9 @@
     <title>Tickets Picnic</title>
 </head>
 <body>
+    <h1>Top Users</h1>
+    <ol id="top-users">Carregando...</ol>
+
     <h1 id="categories-header">Tickets by Category [-]</h1>
     <div id="categories">Loading Categories...</div>
 
@@ -12,6 +15,24 @@
     <div id="all-tickets">Loading tickets...</div>
 
     <script>
+        fetch('/main_users')
+        .then(r => r.json())
+        .then(rows => {
+            const lista = document.getElementById('top-users');
+            lista.innerHTML = '';
+
+            // rows é um array de objetos: [{ user: 'Ava Patel', tickets: 8 }, ...]
+            rows.forEach(({ user, tickets }) => {
+            const li = document.createElement('li');
+            li.textContent = `${user} - ${tickets} tickets`;
+            lista.appendChild(li);
+            });
+        })
+        .catch(err => {
+            console.error('Erro ao carregar top users:', err);
+            document.getElementById('top-users').innerHTML = '<li>Não foi possível carregar</li>';
+        });
+
         // Make expansible category section
         function createCategorySection(name, tickets) {
             const container = document.createElement('div');
@@ -31,7 +52,7 @@
 
             header.addEventListener("click", () => {
                 event.stopPropagation();
-                
+
                 isOpen = !isOpen;
                 list.style.display = isOpen ? "block" : "none";
                 header.textContent = `${name} (${tickets.length}) ${isOpen ? "[-]" : "[+]"}`;
@@ -64,26 +85,26 @@
 
         // Fetch categories
         fetch('/categories')
-            .then(r => r.json())
-            .then(data => {
-                categoriesDiv.innerHTML = "";
-                for (const category in data) {
-                    categoriesDiv.appendChild(createCategorySection(category, data[category]));
-                }
-            });
+        .then(r => r.json())
+        .then(data => {
+            categoriesDiv.innerHTML = "";
+            for (const category in data) {
+                categoriesDiv.appendChild(createCategorySection(category, data[category]));
+            }
+        });
 
         // Fetch all tickets
         fetch('/tickets')
-            .then(r => r.json())
-            .then(data => {
-                allDiv.innerHTML = "";
-                data.forEach(ticket => {
-                    const item = document.createElement('div');
-                    item.innerHTML = `<h3>Ticket Subject:</h3><strong>${ticket.subject}</strong><br>
-                                      <h4>Comments:</h4>${ticket.comment.body}<hr>`;
-                    allDiv.appendChild(item);
-                });
+        .then(r => r.json())
+        .then(data => {
+            allDiv.innerHTML = "";
+            data.forEach(ticket => {
+                const item = document.createElement('div');
+                item.innerHTML = `<h3>Ticket Subject:</h3><strong>${ticket.subject}</strong><br>
+                                    <h4>Comments:</h4>${ticket.comment.body}<hr>`;
+                allDiv.appendChild(item);
             });
+        });
     </script>
 </body>
 </html>
