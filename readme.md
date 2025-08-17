@@ -15,3 +15,9 @@ Critérios de Avaliação:
 2. Capacidade de lidar com instruções mais gerais e tomar decisões sensatas ao implementar
 3. Código sem bugs e de fácil manutenção
 4. Avançar nas tarefas opcionais
+
+# Execução
+```
+docker build -t ticket-category
+docker run --rm -p 5011:5000 ticket-category
+```
