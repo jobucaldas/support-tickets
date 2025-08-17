@@ -1,11 +1,5 @@
 Formato: Esse exercício deve ser concluído em no máximo 2 horas 
 
-Caso fique incompleto assim que fechar 2 horas, entregue do jeito que ficou e mande uma mensagem para o seu primeiro entrevistador com um resumo do que foi feito.
-Prazo de entrega: 17/08/2024 23h59 horário de Brasília
-
-
-Formato de Entrega: repositório no github, por favor garantir acesso para as contas joaoavf, pgbrandao, andre-thiessen e purybr365
-
 Desafio: Categorizar 50 tickets de suporte em categorias frequentes. O objetivo é auxiliar o gerente de suporte a entender quais os problemas mais importantes que devem ser escalados para o time de engenharia.
 
 Desafio Opcional (caso sobre tempo, os itens abaixos não tem ordem definida, prossiga com o que você julgar que terá uma melhor execução): 
