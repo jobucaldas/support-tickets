@@ -5,6 +5,83 @@
     <title>Tickets Picnic</title>
 </head>
 <body>
-    <h1>Tickets por categoria</h1>
+    <h1 id="categories-header">Tickets by Category [-]</h1>
+    <div id="categories">Loading Categories...</div>
+
+    <h1 id="all-tickets-header">All Tickets [-]</h1>
+    <div id="all-tickets">Loading tickets...</div>
+
+    <script>
+        // Make expansible category section
+        function createCategorySection(name, tickets) {
+            const container = document.createElement('div');
+            const header = document.createElement('div');
+            let isOpen = false;
+            header.textContent = `[+] ${name} (${tickets.length})`;
+
+            const list = document.createElement('div');
+            list.style.display = "none";
+
+            tickets.forEach(ticket => {
+                const item = document.createElement('div');
+                item.innerHTML = `<h3>Ticket Subject:</h3><strong>${ticket.subject}</strong><br>
+                                  <h4>Comments:</h4>${ticket.comment.body}<hr>`;
+                list.appendChild(item);
+            });
+
+            header.addEventListener("click", () => {
+                isOpen = !isOpen;
+                list.style.display = isOpen ? "block" : "none";
+                header.textContent = `${isOpen ? "[-]" : "[+]"} ${name} (${tickets.length})`;
+            });
+
+            container.appendChild(header);
+            container.appendChild(list);
+            return container;
+        }
+
+        // Categories expand/collapse control
+        const categoriesHeader = document.getElementById("categories-header");
+        const categoriesDiv = document.getElementById("categories");
+        let categoriesOpen = false;
+        categoriesHeader.addEventListener("click", () => {
+            categoriesOpen = !categoriesOpen;
+            categoriesDiv.style.display = categoriesOpen ? "block" : "none";
+            categoriesHeader.textContent = `Tickets by Category ${categoriesOpen ? "[-]" : "[+]"}`;
+        });
+
+        // Make expansible tickets section
+        const allHeader = document.getElementById("all-tickets-header");
+        const allDiv = document.getElementById("all-tickets");
+        let allOpen = false;
+        allHeader.addEventListener("click", () => {
+            allOpen = !allOpen;
+            allDiv.style.display = allOpen ? "block" : "none";
+            allHeader.textContent = `All Tickets ${allOpen ? "[-]" : "[+]"}`;
+        });
+
+        // Fetch categories
+        fetch('/categories')
+            .then(r => r.json())
+            .then(data => {
+                categoriesDiv.innerHTML = "";
+                for (const category in data) {
+                    categoriesDiv.appendChild(createCategorySection(category, data[category]));
+                }
+            });
+
+        // Fetch all tickets
+        fetch('/tickets')
+            .then(r => r.json())
+            .then(data => {
+                allDiv.innerHTML = "";
+                data.forEach(ticket => {
+                    const item = document.createElement('div');
+                    item.innerHTML = `<h3>Ticket Subject:</h3><strong>${ticket.subject}</strong><br>
+                                      <h4>Comments:</h4>${ticket.comment.body}<hr>`;
+                    allDiv.appendChild(item);
+                });
+            });
+    </script>
 </body>
 </html>
